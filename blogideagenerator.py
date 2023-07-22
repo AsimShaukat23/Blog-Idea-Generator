@@ -25,8 +25,23 @@ def generate_blog_ideas(prompt):
         "prompt": prompt,
         "max_tokens": 60
     }
-    response = requests.post("https://api.openai.com/v1/engines/text-davinci-002/completions", json=data, headers=headers)
-    return response.json()["choices"][0]["text"].strip()
+
+    try:
+        response = requests.post("https://api.openai.com/v1/engines/text-davinci-002/completions", json=data, headers=headers)
+
+        # Print the API response for debugging
+        print("API Response:", response.json())
+
+        # Check if the API response is successful
+        if response.status_code == 200 and "choices" in response.json():
+            return response.json()["choices"][0]["text"].strip()
+        else:
+            return "Error: Unable to generate blog ideas. Please check your input and try again."
+
+    except Exception as e:
+        # Handle any exceptions that occur during the API call
+        print("Error during API call:", e)
+        return "Error: Unable to generate blog ideas. An error occurred during the API call."
 
 def main():
     st.title("Streamlit Blog Idea Generator")
