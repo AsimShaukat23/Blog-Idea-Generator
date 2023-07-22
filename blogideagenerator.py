@@ -30,6 +30,7 @@ def generate_blog_ideas(prompt):
         response = requests.post("https://api.openai.com/v1/engines/text-davinci-002/completions", json=data, headers=headers)
 
         # Print the API response for debugging
+        print("API Response Status Code:", response.status_code)
         print("API Response:", response.json())
 
         # Check if the API response is successful
